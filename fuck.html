@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cipher Web - Period Calculation</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #121212;
+            color: #00FF00;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #00FF00;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+        .output {
+            margin-top: 20px;
+            font-size: 1.5rem;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #AAAAAA;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            const textView1 = document.getElementById('textview1');
+            const textView2 = document.getElementById('textview2');
+
+            // Get current time
+            const now = new Date();
+            const hour = now.getHours();
+            const minute = now.getMinutes();
+            const totalMinutes = (hour * 60) + minute;
+
+            // Format the date as yyyyMMdd
+            const currentDate = now.toISOString().slice(0, 10).replace(/-/g, '');
+
+            // Calculate period number based on minutes and offset (330 minutes = 5 hours 30 mins)
+            const offset = 330;
+            const periodCalculation = 10001 + totalMinutes - offset;
+            const periodNumber = `${currentDate}1000${periodCalculation}`;
+
+            // Set calculated period number to the text field
+            textView1.innerText = `Period Number: ${periodNumber}`;
+
+            // Calculate digit sum for period calculation
+            let digitSum = String(periodCalculation).split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+
+            // Reduce digit sum to a single digit if needed
+            while (digitSum >= 10) {
+                digitSum = String(digitSum).split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+            }
+
+            // Calculate result based on digit sum
+            let result = '';
+            if (digitSum >= 0 && digitSum <= 4) {
+                result = 'SMALL';
+            } else if (digitSum >= 5 && digitSum <= 9) {
+                result = 'BIG';
+            } else {
+                result = 'ERROR'; // Handle unexpected cases
+            }
+
+            // Set BIG or SMALL result to text field
+            textView2.innerText = `Result: ${result}`;
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>ANXT</h1>
+        <div id="textview1" class="output">Period Number: Calculating...</div>
+        <div id="textview2" class="output">Result: Calculating...</div>
+        <div class="footer">PRESENTED BY ANXT</div>
+    </div>
+</body>
+</html>
